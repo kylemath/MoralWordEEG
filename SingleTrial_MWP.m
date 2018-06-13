@@ -83,9 +83,8 @@ for i_part = 1:nparts
     end
 end
 
-%writes out the data to xlsx to save for GMM, where the still 
-%NEED TO BE SORTED by subjectnumber (A) and trialnumber(B) in xcell and
-%then pasted into all columns of GEE_Data_MWP.xlsx
+%writes out the data to xlsx to save for analysis, where the still 
+%NEED TO BE pasted into all columns of GEE_Data_MWP.xlsx
 
 xlswrite('testout.xlsx',[SubjectNumber num2cell(TrialNumber) WordType WordCategory LetterString num2cell(ButtonPress) Accuracy num2cell(RT)])
 

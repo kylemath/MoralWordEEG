@@ -3,6 +3,8 @@
 %Load in the data and create ERPs comparing the different conditions
 
 addpath('subfunctions')
+addpath('lib');
+
 ccc
 eeglab
 %uses EEGLAB13_3_2b
@@ -33,7 +35,7 @@ end
 %% Early time period, strongest difference at Cz
 channels = [7 7 8];
 
-for i_set = 2%1:nsets
+for i_set = 2
     for i_effect = 1:3
         
         
@@ -57,6 +59,13 @@ for i_set = 2%1:nsets
             line([ERP_effect_timerange{2}(2) ERP_effect_timerange{2}(2)],[-10 11],'color','k');
             line([ERP_effect_timerange{3}(2) ERP_effect_timerange{3}(2)],[-10 11],'color','k');
             line([exp.epochslims*1000],[0 0],'color','k');
+            plt = Plot();
+            plt.XLabel = 'Time (ms)'; % xlabel
+            plt.YLabel = 'Voltage (uV)'; %ylabel
+            plt.XMinorTick = 'off';
+            plt.YMinorTick = 'off';
+
+            
         end
         
         
@@ -76,7 +85,7 @@ for i_set = 2%1:nsets
         title([ERP_effect_name{i_effect} ' - Words Minus Nonwords']);
         t = colorbar('peer',gca);
         set(get(t,'ylabel'),'String', 'Voltage Difference (uV)');
-        
+
         
         %% Figure 4B
         % Words vs non words
@@ -112,6 +121,11 @@ for i_set = 2%1:nsets
             line([ERP_effect_timerange{1}(2) ERP_effect_timerange{1}(2)],[-10 11],'color','k');
             line([ERP_effect_timerange{2}(2) ERP_effect_timerange{2}(2)],[-10 11],'color','k');
             line([ERP_effect_timerange{3}(2) ERP_effect_timerange{3}(2)],[-10 11],'color','k');
+            plt = Plot();
+            plt.XLabel = 'Time (ms)'; % xlabel
+            plt.YLabel = 'Voltage (uV)'; %ylabel
+            plt.XMinorTick = 'off';
+            plt.YMinorTick = 'off';
             
         end
         

@@ -16,7 +16,7 @@ download and change paths in the following script:
 2) PlotERP_MWP.m - This loads the preprocessed segments plots the ERP's and topographies to make figures 3 and 4
   -Load_data_MWP.m - subfunction to load data
 
-3) SingleTrial_MWP.m - This loads the behavioural data and EEG data together and creates a list of each trial and the ERP magnitude on that trial to use for the GMM analysis, outputs a testout.csv file of the erp magnitudes that can be pasted into GEE_Data_MWP.xlsx after being resorted as indicated in the comments
+3) SingleTrial_MWP.m - This loads the behavioural data and creates a list of each trial to use for analysis, outputs a testout.csv file of the data that can be pasted into the columns of GEE_Data_MWP.xlsx.
 
 subfunctions - folder of functions used in the code
 EOG-electrode-locs.ced - locations of electrodes for eeglab topographies

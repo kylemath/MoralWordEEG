@@ -32,6 +32,25 @@ for i_set = 1:nsets
 end
 
 
+%% Count how many trials were retained after artifact rejection
+for i_set = 1:nsets
+    for eegset = 1:nevents
+        for i_part = 1:nparts
+            trial_count(eegset,i_part,i_set) = length(ALLEEG((i_set-1)*nevents*nparts + (i_part-1)*(nevents) + eegset).epoch);
+        end
+    end
+end
+totalTrials = squeeze(sum(sum(trial_count,1),3));
+justCorrect = squeeze(trial_count(:,:,2));
+justCorrectMean = mean(justCorrect,2);
+justCorrectSD = std(justCorrect,[],2);
+
+%prints stats for paper in command window
+ fprintf(['An average of ' num2str(mean(totalTrials)) ' (SD = ' num2str(std(totalTrials)) ') of the original 500 trials remained for analysis after artifact rejection. \n']);
+ for i=1:4
+    fprintf(['An average of ' num2str(justCorrectMean(i)) ' (SD = ' num2str(justCorrectSD(i)) ') of the original correct ' exp.event_names{1,i} 'trials remained for analysis after artifact rejection. \n']);
+ end
+
 %% Early time period, strongest difference at Cz
 channels = [7 7 8];
 

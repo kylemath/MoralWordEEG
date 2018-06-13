@@ -47,7 +47,8 @@ for i_set = 2
             erpdata = squeeze(mean(mean(data_out(i_chan,:,:,:,i_set),1),4));
             erpsems = squeeze(SEMws(mean(data_out(i_chan,:,:,:,i_set),1),3,4));
             
-            figure; boundedline(EEG.times(801:end),erpdata(801:end,1),erpsems(801:end,1),'r',EEG.times(801:end),erpdata(801:end,2),erpsems(801:end,2),'g',EEG.times(801:end),erpdata(801:end,3),erpsems(801:end,3),'b',EEG.times(801:end),erpdata(801:end,4),erpsems(801:end,4),'c');
+            figure;
+            boundedline(EEG.times(801:end),erpdata(801:end,1),erpsems(801:end,1),'r',EEG.times(801:end),erpdata(801:end,2),erpsems(801:end,2),'g',EEG.times(801:end),erpdata(801:end,3),erpsems(801:end,3),'b',EEG.times(801:end),erpdata(801:end,4),erpsems(801:end,4),'c');
             xlim([-200 1000])
             ylim([-2 11]);     set(gca,'ydir','reverse');
             title([ERP_effect_name{i_effect} ' at electrode ' electrodes{i_chan}]);
@@ -59,12 +60,8 @@ for i_set = 2
             line([ERP_effect_timerange{2}(2) ERP_effect_timerange{2}(2)],[-10 11],'color','k');
             line([ERP_effect_timerange{3}(2) ERP_effect_timerange{3}(2)],[-10 11],'color','k');
             line([exp.epochslims*1000],[0 0],'color','k');
-            plt = Plot();
-            plt.XLabel = 'Time (ms)'; % xlabel
-            plt.YLabel = 'Voltage (uV)'; %ylabel
-            plt.XMinorTick = 'off';
-            plt.YMinorTick = 'off';
-
+            savefig(['AllFour_' ERP_effect_name{i_effect} ' at electrode ' electrodes{i_chan}]);
+            
             
         end
         
@@ -85,7 +82,8 @@ for i_set = 2
         title([ERP_effect_name{i_effect} ' - Words Minus Nonwords']);
         t = colorbar('peer',gca);
         set(get(t,'ylabel'),'String', 'Voltage Difference (uV)');
-
+        savefig([ERP_effect_name{i_effect} ' - Words Minus Nonwords']);
+        
         
         %% Figure 4B
         % Words vs non words
@@ -99,7 +97,7 @@ for i_set = 2
         title([ERP_effect_name{i_effect} ' - Moral words - Non-moral words']);
         t = colorbar('peer',gca);
         set(get(t,'ylabel'),'String', 'Voltage Difference (uV)');
-        
+        savefig([ERP_effect_name{i_effect} ' - Moral words - Non-moral words']);
         
         if i_effect > 1
             %% Figure 3C & 4C
@@ -121,11 +119,8 @@ for i_set = 2
             line([ERP_effect_timerange{1}(2) ERP_effect_timerange{1}(2)],[-10 11],'color','k');
             line([ERP_effect_timerange{2}(2) ERP_effect_timerange{2}(2)],[-10 11],'color','k');
             line([ERP_effect_timerange{3}(2) ERP_effect_timerange{3}(2)],[-10 11],'color','k');
-            plt = Plot();
-            plt.XLabel = 'Time (ms)'; % xlabel
-            plt.YLabel = 'Voltage (uV)'; %ylabel
-            plt.XMinorTick = 'off';
-            plt.YMinorTick = 'off';
+            savefig(['Difference_' ERP_effect_name{i_effect} ' at electrode ' electrodes{i_chan}]);
+            
             
         end
         

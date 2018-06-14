@@ -18,6 +18,8 @@ download and change paths in the following script:
 
 3) SingleTrial_MWP.m - This loads the behavioural data and creates a list of each trial to use for analysis, outputs a testout.csv file of the data that can be pasted into the columns of GEE_Data_MWP.xlsx.
 
+4) SingleTrial_ERP_MWP.m - This loads the behavioural data and EEG data together and creates a list of each trial to use for analysis, outputs a testout.csv file of the data that can be pasted into the columns of GEE_Data_ERP_MWP.xlsx.
+
 subfunctions - folder of functions used in the code
 EOG-electrode-locs.ced - locations of electrodes for eeglab topographies
 4conds_rej3_Settings_MWP.mat - saved preprocessing settings made by Analysis_Wrapper_MWP.m

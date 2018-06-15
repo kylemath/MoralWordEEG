@@ -122,20 +122,29 @@ for i_part = 1:nparts
 end
 
 %% Get the columns to paste to excel
-Window1Pz = []; Window2Pz = []; Window3Cz = [];  SubjectNumber = []; TrialNumber = []; WordCategory = []; LetterString = []; ButtonPress = []; Accuracy = []; WordType = []; WordCategory = []; RT = []; originalorder = 0;
+Window1Pz = []; Window1Cz = []; Window2Pz = []; Window2Cz = []; Window3Pz = []; Window3Cz = [];  
+SubjectNumber = []; TrialNumber = []; WordCategory = []; LetterString = []; ButtonPress = []; Accuracy = []; 
+WordType = []; WordCategory = []; RT = []; originalorder = 0;
+
 Categories =  {'Moral', 'Nonmoral', 'Moral', 'Nonmoral'};
 Types = {'Word','Word','Nonword','Nonword'};
-ChanFz = 9;
-ChanCz = 8;
-ChanPz = 7; 
+ChanCz = 8;  %moral vs nonmoral max at Cz
+ChanPz = 7;  %words - nonwords max at Pz
 
 for i_set = 1:nsets
     for i_part = 1:nparts
         for eegset = 1:nevents
-            numberoftrials = length(submeans{i_set,eegset,i_part,1}(ChanFz,:)'); %could use any channel
-            Window1Pz = [Window1Pz ; submeans{i_set,eegset,i_part,1}(ChanPz,:)'];
-            Window2Pz = [Window2Pz ; submeans{i_set,eegset,i_part,2}(ChanPz,:)'];
+            numberoftrials = length(submeans{i_set,eegset,i_part,1}(ChanPz,:)'); %could use any channel
+            
+            Window1Pz = [Window1Pz ; submeans{i_set,eegset,i_part,1}(ChanPz,:)']; %N250
+            Window1Cz = [Window1Cz ; submeans{i_set,eegset,i_part,1}(ChanCz,:)'];
+            
+            Window2Pz = [Window2Pz ; submeans{i_set,eegset,i_part,2}(ChanPz,:)']; %p3
+            Window2Cz = [Window2Cz ; submeans{i_set,eegset,i_part,2}(ChanCz,:)'];
+            
+            Window3Pz = [Window3Pz ; submeans{i_set,eegset,i_part,3}(ChanPz,:)']; %LPP
             Window3Cz = [Window3Cz ; submeans{i_set,eegset,i_part,3}(ChanCz,:)'];
+            
             SubjectNumber = [SubjectNumber; repmat(str2num(exp.participants{i_part}),[1 numberoftrials])'];
             TrialNumber = [TrialNumber; trialnum{eegset,i_part,i_set}];
             WordType = [WordType; repmat(Types(eegset),[1 numberoftrials])'];
@@ -152,5 +161,5 @@ end
 %writes out the data to xlsx to save for GMM, where the still 
 %NEED TO BE SORTED by subjectnumber (A) and trialnumber(B) in xcell and
 %then pasted into GEE_Data_ERP_MWP.xlsx final three columns
-xlswrite('testout.xlsx',[SubjectNumber TrialNumber Window1Pz Window2Pz Window3Cz])
+xlswrite('testout_ERP.xlsx',[SubjectNumber TrialNumber Window1Pz Window1Cz Window2Pz Window2Cz Window3Pz Window3Cz])
 

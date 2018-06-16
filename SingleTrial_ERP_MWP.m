@@ -20,8 +20,9 @@ Load_data_MWP(exp,anal)
 electrodes = {EEG.chanlocs.labels};
 % Type "electrodes" into the command line. This will show you which number to use for i_chan
 
-ERP_effect_name = {'N250 ','P3','Late'};
-ERP_effect_timerange = {[200 350];[350 600];[600 800]};
+ERP_effect_name = {'P2','N2','P3','LPP'};
+ERP_effect_timerange = {[200 250];[250 350];[350 600];[600 800]};
+n_effect = length(ERP_effect_name);
 
 clear all_trials
 
@@ -59,15 +60,16 @@ end
 
 %% loop through ang get the average erp for each effect
 for i_set = 1:nsets
-    for i_effect = 1:3
+    for i_effect = 1:n_effect %ERP components
         time_window = find(EEG.times>ERP_effect_timerange{i_effect}(1),1):find(EEG.times>ERP_effect_timerange{i_effect}(2),1);
-        for eegset = 1:nevents
+        for eegset = 1:nevents %experiment conditions
             for i_part = 1:nparts
                 submeans{i_set,eegset,i_part,i_effect} = squeeze(mean(alltrials{eegset,i_part,i_set}(:,time_window,:),2));
             end
         end
     end
 end
+
 
 %% load in beh and fix a few that were wrong
 
@@ -122,28 +124,31 @@ for i_part = 1:nparts
 end
 
 %% Get the columns to paste to excel
-Window1Pz = []; Window1Cz = []; Window2Pz = []; Window2Cz = []; Window3Pz = []; Window3Cz = [];  
+Window0Pz = []; Window0Cz = []; Window1Pz = []; Window1Cz = []; Window2Pz = []; Window2Cz = []; Window3Pz = []; Window3Cz = [];  
 SubjectNumber = []; TrialNumber = []; WordCategory = []; LetterString = []; ButtonPress = []; Accuracy = []; 
 WordType = []; WordCategory = []; RT = []; originalorder = 0;
 
 Categories =  {'Moral', 'Nonmoral', 'Moral', 'Nonmoral'};
 Types = {'Word','Word','Nonword','Nonword'};
-ChanCz = 8;  %moral vs nonmoral max at Cz
-ChanPz = 7;  %words - nonwords max at Pz
+ChanCz = 8;  %moral vs nonmoral at Cz
+ChanPz = 7;  %words - nonwords at Pz
 
 for i_set = 1:nsets
     for i_part = 1:nparts
         for eegset = 1:nevents
             numberoftrials = length(submeans{i_set,eegset,i_part,1}(ChanPz,:)'); %could use any channel
             
-            Window1Pz = [Window1Pz ; submeans{i_set,eegset,i_part,1}(ChanPz,:)']; %N250
-            Window1Cz = [Window1Cz ; submeans{i_set,eegset,i_part,1}(ChanCz,:)'];
+            Window0Pz = [Window0Pz ; submeans{i_set,eegset,i_part,1}(ChanPz,:)']; %P2
+            Window0Cz = [Window0Cz ; submeans{i_set,eegset,i_part,1}(ChanCz,:)'];
             
-            Window2Pz = [Window2Pz ; submeans{i_set,eegset,i_part,2}(ChanPz,:)']; %p3
-            Window2Cz = [Window2Cz ; submeans{i_set,eegset,i_part,2}(ChanCz,:)'];
+            Window1Pz = [Window1Pz ; submeans{i_set,eegset,i_part,2}(ChanPz,:)']; %N2
+            Window1Cz = [Window1Cz ; submeans{i_set,eegset,i_part,2}(ChanCz,:)'];
             
-            Window3Pz = [Window3Pz ; submeans{i_set,eegset,i_part,3}(ChanPz,:)']; %LPP
-            Window3Cz = [Window3Cz ; submeans{i_set,eegset,i_part,3}(ChanCz,:)'];
+            Window2Pz = [Window2Pz ; submeans{i_set,eegset,i_part,3}(ChanPz,:)']; %p3
+            Window2Cz = [Window2Cz ; submeans{i_set,eegset,i_part,3}(ChanCz,:)'];
+            
+            Window3Pz = [Window3Pz ; submeans{i_set,eegset,i_part,4}(ChanPz,:)']; %LPP
+            Window3Cz = [Window3Cz ; submeans{i_set,eegset,i_part,4}(ChanCz,:)'];
             
             SubjectNumber = [SubjectNumber; repmat(str2num(exp.participants{i_part}),[1 numberoftrials])'];
             TrialNumber = [TrialNumber; trialnum{eegset,i_part,i_set}];
@@ -161,5 +166,5 @@ end
 %writes out the data to xlsx to save for GMM, where the still 
 %NEED TO BE SORTED by subjectnumber (A) and trialnumber(B) in xcell and
 %then pasted into GEE_Data_ERP_MWP.xlsx final three columns
-xlswrite('testout_ERP.xlsx',[SubjectNumber TrialNumber Window1Pz Window1Cz Window2Pz Window2Cz Window3Pz Window3Cz])
+xlswrite('testout_ERP.xlsx',[SubjectNumber TrialNumber Window0Pz Window0Cz Window1Pz Window1Cz Window2Pz Window2Cz Window3Pz Window3Cz])
 
